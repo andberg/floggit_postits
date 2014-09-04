@@ -71,7 +71,7 @@ angular.module('floggitPostitsApp')
         $scope.deletePostit = function () {
           var answer = confirm('Are you sure that you want to delete this postit?');
           if (answer === true) {
-            dataStorage.deletePostit(currentWhiteboard.getName(), $scope.postit.id).then(function () {}).then(function () {
+            dataStorage.deletePostit(currentWhiteboard.getName(), $scope.postit.id).then(function () {
               $route.reload();
             });
           }

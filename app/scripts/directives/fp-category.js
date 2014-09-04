@@ -17,6 +17,11 @@ angular.module('floggitPostitsApp')
       controller: function ($scope, $route, dataStorage, currentWhiteboard) {
         var name = $scope.category.name;
         var category = $scope.category;
+
+        $scope.$watch('category', function () {
+          category = $scope.category;
+        });
+
         $scope.updateCategoryName = function () {
           if ($scope.category.name !== name) {
             dataStorage.updateCategory(currentWhiteboard.getName(), $scope.category)
