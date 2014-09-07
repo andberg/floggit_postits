@@ -30,6 +30,7 @@ angular.module('floggitPostitsApp')
               });
           }
         };
+
         $scope.deleteCategory = function () {
           var answer = confirm('Are you sure about deleting this category with its postits?');
           if (answer === true) {

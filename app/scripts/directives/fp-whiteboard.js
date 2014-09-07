@@ -15,7 +15,8 @@ angular.module('floggitPostitsApp')
         name: '='
       },
       controller: function ($scope, dataStorage, currentWhiteboard) {
-        currentWhiteboard.setName($scope.name);
+
+        $scope.name = currentWhiteboard.getName();
 
         function getAllData() {
           dataStorage.getAll($scope.name)
@@ -25,7 +26,6 @@ angular.module('floggitPostitsApp')
             });
         }
         getAllData();
-
         $scope.$on('dataUpdated', getAllData);
       }
     };

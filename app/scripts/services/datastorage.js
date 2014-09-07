@@ -17,11 +17,16 @@
        * options should include method, whiteboard, type
        * options could include  id, data
        */
+
       function basicRequest(options) {
         var deferred = $q.defer();
-        var url = baseUrl + options.whiteboard + '-' + options.type;
-
         var requestParams = {};
+        var url = baseUrl + options.whiteboard + '-' + options.type;
+        if (options.whiteboard === 'whiteboards') {
+          url = baseUrl + options.whiteboard;
+        }
+
+
         if (options.id !== undefined) {
           url = url + '/' + options.id;
         }
@@ -29,12 +34,14 @@
         requestParams.url = url;
         if (options.data !== undefined) {
           requestParams.data = options.data;
+
         }
         console.log(options.method + ' ' + url);
         $http(requestParams).success(function (data) {
           if (options.method !== 'GET') {
             $rootScope.$broadcast('dataUpdated', 'My data!! =D');
           }
+          console.log(data);
           deferred.resolve(data);
         });
         return deferred.promise;
@@ -146,6 +153,27 @@
           });
       }
 
+      function getAllWhiteboards() {
+        // return basicGet('whiteboards');
+        var whiteboards;
+        $http({
+          method: 'GET',
+          url: 'http://localhost:14782/fp-whiteboards'
+        }).then(function (data) {
+          whiteboards = data.data;
+          console.log(whiteboards);
+        });
+        return whiteboards;
+      }
+
+      function createWhiteboard(newWhiteboard) {
+        $http({
+          method: 'POST',
+          url: 'http://localhost:14782/fp-whiteboards',
+          data: newWhiteboard
+        }).success(function () {});
+      }
+
 
       return {
         createPostit: createPostit,
@@ -156,6 +184,8 @@
         deleteCategory: deleteCategory,
         getAllCategoriesFor: getAllCategoriesFor,
         getAllPostitsFor: getAllPostitsFor,
-        getAll: getAll
+        getAll: getAll,
+        getAllWhiteboards: getAllWhiteboards,
+        createWhiteboard: createWhiteboard
       };
     });
