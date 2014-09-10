@@ -11,35 +11,26 @@ angular.module('floggitPostitsApp')
 		return {
 			templateUrl: 'views/createselectwhiteboard.html',
 			restrict: 'E',
-			controller: function ($scope, $http, $route, $location, currentWhiteboard) {
+			controller: function ($scope, $http, $route, $location, currentWhiteboard, dataStorage) {
 
 				$scope.allWhiteboards = [];
 
-				$http({
-					method: 'GET',
-					url: 'http://localhost:14782/fp-whiteboards'
-				}).then(function (data) {
-					$scope.allWhiteboards = data.data;
-					console.log($scope.allWhiteboards);
-				});
+				var getAllWhiteboards = function () {
+					dataStorage.getAllWhiteboards().then(function (data) {
+						console.log(data);
+						$scope.allWhiteboards = data;
+					});
+				};
+				getAllWhiteboards();
 
 				$scope.createNewWhiteboard = function (newWhiteboard) {
 					var whiteboard = {
 						name: newWhiteboard
 					};
-					$http({
-						method: 'POST',
-						url: 'http://localhost:14782/fp-whiteboards',
-						data: whiteboard
-					}).success(function () {
-						$http({
-							method: 'GET',
-							url: 'http://localhost:14782/fp-whiteboards'
-						}).then(function (data) {
-							$scope.allWhiteboards = data.data;
-							console.log($scope.allWhiteboards);
-						});
+					dataStorage.createWhiteboard(whiteboard).then(function () {
+						getAllWhiteboards();
 					});
+
 				};
 
 				$scope.choosenWhiteboard = function (boardName) {
